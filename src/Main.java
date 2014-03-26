@@ -1,6 +1,6 @@
 class Main {
     public static void main(String[] args) {
-        Parser parser = new Parser("2 + 76 - 4");
+        Parser parser = new Parser("2 + 7 + 3");
 
         System.out.println(parser.calculate());
 
