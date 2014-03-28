@@ -27,42 +27,48 @@ class Token {
 
 
     public boolean isSeparator() {
-        return (tokenAsString.equals(","));
+        return tokenAsString.equals(",");
     }
 
 
     public boolean isLeftBracket() {
-        return (tokenAsString.equals("("));
+        return tokenAsString.equals("(");
     }
 
 
     public boolean isRightBracket() {
-        return (tokenAsString.equals(")"));
+        return tokenAsString.equals(")");
     }
 
 
     public boolean isLeftAssoc() {
-        return true; // !!!
+        return !this.isRightAssoc();
     }
 
 
     public boolean isRightAssoc() {
-        return false; // !!!
+        return contains(rightAssocOperators, tokenAsString);
     }
 
 
     public boolean isBinary() {
-        return true; // !!!
+        return !this.isUnary();
     }
 
 
     public boolean isUnary() {
-        return false; // !!!
+        return this.isOperator() && tokenAsString.startsWith("u");
     }
 
 
     public int getPriority() {
-        return 1; // !!!
+        for (int i = 0; i < priorityTable.length; ++i) {
+            if (contains(priorityTable[i], tokenAsString)) {
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 
@@ -80,5 +86,7 @@ class Token {
     String tokenAsString;
 
     String[] operators = { "+", "-", "*", "/" };
+    String[] rightAssocOperators = { };
 
+    String[][] priorityTable = {{ "+", "-" }, { "*", "/" }};
 }
