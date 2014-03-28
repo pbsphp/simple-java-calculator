@@ -12,23 +12,19 @@ class Parser {
         ArrayList<Token> tokensList = getTokensAsList();
         ArrayList<Token> tokensStack = backPolishNotation(tokensList);
 
-        // TODO: maybe Stack<double> ?
-        Stack<Token> operandsStack = new Stack<Token>();
+        Stack<Double> operandsStack = new Stack<Double>();
 
         for (Token operand : tokensStack) {
             if (operand.isNumber()) {
-                operandsStack.push(operand);
+                operandsStack.push(operand.toNumber());
             }
             else if (operand.isOperator()) {
-                Token result = calculateForOperator(operand, operandsStack);
+                double result = calculateForOperator(operand, operandsStack);
                 operandsStack.push(result);
             }
         }
 
-
-        String resultString = operandsStack.pop().toString();
-
-        return Double.parseDouble(resultString);
+        return operandsStack.pop();
     }
 
 
@@ -122,33 +118,33 @@ class Parser {
     }
 
 
-    public Token calculateForOperator(Token operator, Stack<Token> arguments) {
-        int resultNumber = 0;
-        int operand1 = 0;
-        int operand2 = 0;
+    public double calculateForOperator(Token operator, Stack<Double> arguments) {
+        double resultNumber = 0;
+        double operand1 = 0;
+        double operand2 = 0;
 
         switch (operator.toString()) {
         case "+":
-            operand2 = Integer.parseInt(arguments.pop().toString());
-            operand1 = Integer.parseInt(arguments.pop().toString());
+            operand2 = arguments.pop();
+            operand1 = arguments.pop();
             resultNumber = operand1 + operand2;
             break;
 
         case "-":
-            operand2 = Integer.parseInt(arguments.pop().toString());
-            operand1 = Integer.parseInt(arguments.pop().toString());
+            operand2 = arguments.pop();
+            operand1 = arguments.pop();
             resultNumber = operand1 - operand2;
             break;
 
         case "*":
-            operand2 = Integer.parseInt(arguments.pop().toString());
-            operand1 = Integer.parseInt(arguments.pop().toString());
+            operand2 = arguments.pop();
+            operand1 = arguments.pop();
             resultNumber = operand1 * operand2;
             break;
 
         case "/":
-            operand2 = Integer.parseInt(arguments.pop().toString());
-            operand1 = Integer.parseInt(arguments.pop().toString());
+            operand2 = arguments.pop();
+            operand1 = arguments.pop();
             resultNumber = operand1 / operand2;
             break;
 
@@ -156,10 +152,8 @@ class Parser {
             System.out.println("Not operator!");
         }
 
-        String resultString = Integer.toString(resultNumber);
-        return new Token(resultString);
+        return resultNumber;
     }
-
 
 
     String expression;

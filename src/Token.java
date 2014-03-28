@@ -83,6 +83,11 @@ class Token {
     }
 
 
+    public double toNumber() {
+        return Double.parseDouble(tokenAsString);
+    }
+
+
     String tokenAsString;
 
     String[] operators = { "+", "-", "*", "/" };
