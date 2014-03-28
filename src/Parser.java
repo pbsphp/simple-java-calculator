@@ -10,6 +10,8 @@ class Parser {
 
     public double calculate() {
         ArrayList<Token> tokensList = getTokensAsList();
+
+        // TODO: Queue, not stack
         Stack<Token> tokensStack = backPolishNotation(tokensList);
 
 
@@ -99,10 +101,16 @@ class Parser {
                 bufferStack.push(token);
             }
             else if (token.isLeftBracket()) {
-                // ...
+                bufferStack.push(token);
             }
             else if (token.isRightBracket()) {
-                // ...
+                while (!bufferStack.peek().isLeftBracket()) {
+                    outputStack.push(bufferStack.pop());
+                }
+                // if bifferStack.peek() is not ) - raise error
+                bufferStack.pop();
+
+                // Functions
             }
         }
         if (!bufferStack.empty() && bufferStack.peek().isOperator()) {
