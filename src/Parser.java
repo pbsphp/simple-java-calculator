@@ -10,17 +10,12 @@ class Parser {
 
     public double calculate() {
         ArrayList<Token> tokensList = getTokensAsList();
-
-        // TODO: Queue, not stack
-        Stack<Token> tokensStack = backPolishNotation(tokensList);
-
+        ArrayList<Token> tokensStack = backPolishNotation(tokensList);
 
         // TODO: maybe Stack<double> ?
         Stack<Token> operandsStack = new Stack<Token>();
 
-        while (!tokensStack.empty()) {
-            Token operand = tokensStack.pop();
-
+        for (Token operand : tokensStack) {
             if (operand.isNumber()) {
                 operandsStack.push(operand);
             }
@@ -72,13 +67,13 @@ class Parser {
     }
 
 
-    Stack<Token> backPolishNotation(ArrayList<Token> arrayList) {
-        Stack<Token> outputStack = new Stack<Token>();
+    ArrayList<Token> backPolishNotation(ArrayList<Token> arrayList) {
+        ArrayList<Token> outputQueue = new ArrayList<Token>();
         Stack<Token> bufferStack = new Stack<Token>();
 
         for (Token token : arrayList) {
             if (token.isNumber()) {
-                outputStack.push(token);
+                outputQueue.add(token);
             }
             else if (token.isFunction()) {
                 // ...
@@ -92,7 +87,7 @@ class Parser {
                     Token op2 = bufferStack.peek();
                     if (op1.isLeftAssoc() && op1.getPriority() <= op2.getPriority()
                         || op1.isRightAssoc() && op1.getPriority() < op2.getPriority()) {
-                        outputStack.push(bufferStack.pop());
+                        outputQueue.add(bufferStack.pop());
                     }
                     else {
                         break;
@@ -105,7 +100,7 @@ class Parser {
             }
             else if (token.isRightBracket()) {
                 while (!bufferStack.peek().isLeftBracket()) {
-                    outputStack.push(bufferStack.pop());
+                    outputQueue.add(bufferStack.pop());
                 }
                 // if bifferStack.peek() is not ) - raise error
                 bufferStack.pop();
@@ -120,18 +115,10 @@ class Parser {
             }
         }
         while (!bufferStack.empty()) {
-            outputStack.push(bufferStack.pop());
+            outputQueue.add(bufferStack.pop());
         }
 
-
-        // Reverse stack
-
-        while (!outputStack.empty()) {
-            bufferStack.push(outputStack.pop());
-        }
-
-        // return outputStack;
-        return bufferStack;
+        return outputQueue;
     }
 
 
