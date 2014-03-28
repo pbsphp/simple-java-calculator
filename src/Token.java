@@ -10,7 +10,7 @@ class Token {
 
 
     public boolean isOperator() {
-        return (tokenAsString.equals("+")); // !!!
+        return contains(operators, tokenAsString);
     }
 
 
@@ -51,11 +51,34 @@ class Token {
     }
 
 
+    public boolean isBinary() {
+        return true; // !!!
+    }
+
+
+    public boolean isUnary() {
+        return false; // !!!
+    }
+
+
     public int getPriority() {
         return 1; // !!!
     }
 
 
+    protected boolean contains(String[] strings, String str) {
+        for (String el : strings) {
+            if (el.equals(str)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
     String tokenAsString;
+
+    String[] operators = { "+", "-", "*", "/" };
 
 }
