@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="Calculator" default="compile">
+
+    <target name="compile" description="Compile my pretty">
+        <javac srcdir="src" destdir="classes" includeantruntime="false" />
+    </target>
+
+    <target name="jar" depends="compile" description="Make jar">
+        <jar destfile="calculator.jar">
+            <fileset dir="classes" includes="**/*.class" />
+            <manifest>
+                <attribute name="Main-Class" value="Calculator"/>
+            </manifest>
+        </jar>
+    </target>
+
+</project>
