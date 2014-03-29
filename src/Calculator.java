@@ -5,7 +5,7 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 
-public class Calculator extends JFrame {
+class Calculator extends JFrame {
 
     protected JTextField resultField;
 

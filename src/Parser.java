@@ -3,12 +3,36 @@ import java.util.Stack;
 import java.lang.Exception;
 
 
-class Parser {
+/**
+ * Class for calculating simple math expressions.
+ * Supported operators are +, -, *, /, also brackets are available.
+ *
+ * @author pbsphp
+ */
+
+public class Parser {
+
+    /**
+     * Constructor of Parser. Gets expression as string and remembers it.
+     * Not calculates it in constructor.
+     *
+     * @param expression
+     */
     public Parser(String expression) {
         this.expression = expression;
     }
 
 
+    /**
+     * Calculates expression and returns result as number.
+     *
+     * @return calculated expression as number
+     *
+     * @throws UnsupportedOperationException if expresison
+     *         contains unsupported things, e.g. functions.
+     * @throws ArithmeticException if expression is invalid
+     *         (zero division or unclosed brackets).
+     */
     public double calculate() throws Exception {
         ArrayList<Token> tokensList = getTokensAsList();
         ArrayList<Token> tokensStack = backPolishNotation(tokensList);
@@ -121,7 +145,7 @@ class Parser {
     }
 
 
-    public double calculateForOperator(Token operator, Stack<Double> arguments) throws Exception {
+    private double calculateForOperator(Token operator, Stack<Double> arguments) throws Exception {
         double resultNumber = 0;
         double operand1 = 0;
         double operand2 = 0;
