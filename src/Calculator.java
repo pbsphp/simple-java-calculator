@@ -7,13 +7,10 @@ import java.util.ArrayList;
 
 public class Calculator extends JFrame {
 
-    protected String resultText;
     protected JTextField resultField;
 
     public Calculator() {
         super("Window name");
-
-        resultText = new String("");
 
         JPanel buttonsPanel = new JPanel(new GridLayout(6, 3));
 
@@ -23,8 +20,6 @@ public class Calculator extends JFrame {
         for (JButton button : initializeButtons()) {
             buttonsPanel.add(button);
         }
-
-        resultField.setText(resultText);
 
         add(resultField, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.SOUTH);
@@ -65,7 +60,8 @@ public class Calculator extends JFrame {
         JButton resButton = new JButton("=");
         resButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Parser parser = new Parser(resultText);
+                String expression = resultField.getText();
+                Parser parser = new Parser(expression);
 
                 try {
                     double result = parser.calculate();
@@ -73,7 +69,7 @@ public class Calculator extends JFrame {
                 }
                 catch (Exception exception) {
                     clearResultField();
-                    addTextToResultField("ERROR");
+                    addTextToResultField("ERROR: " + exception.getMessage());
                 }
             }
         });
@@ -92,14 +88,13 @@ public class Calculator extends JFrame {
 
 
     protected void addTextToResultField(String text) {
-        resultText += text;
-        resultField.setText(resultText);
+        String expression = resultField.getText() + text;
+        resultField.setText(expression);
     }
 
 
     protected void clearResultField() {
-        resultText = "";
-        resultField.setText(resultText);
+        resultField.setText("");
     }
 
 

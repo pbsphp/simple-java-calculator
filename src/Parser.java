@@ -73,10 +73,10 @@ class Parser {
                 outputQueue.add(token);
             }
             else if (token.isFunction()) {
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("Functions are not supported");
             }
             else if (token.isSeparator()) {
-                throw new UnsupportedOperationException();
+                throw new UnsupportedOperationException("Functions are not supported");
             }
             else if (token.isOperator()) {
                 Token op1 = token;
@@ -96,25 +96,25 @@ class Parser {
                 bufferStack.push(token);
             }
             else if (token.isRightBracket()) {
-                while (!bufferStack.peek().isLeftBracket()) {
+                while (!bufferStack.empty() && !bufferStack.peek().isLeftBracket()) {
                     outputQueue.add(bufferStack.pop());
                 }
 
-                if (!bufferStack.peek().isRightBracket()) {
-                    throw new UnsupportedOperationException();
+                if (bufferStack.empty() || !bufferStack.peek().isLeftBracket()) {
+                    throw new ArithmeticException("Invalid brackets");
                 }
 
                 bufferStack.pop();
             }
         }
-        if (!bufferStack.empty() && bufferStack.peek().isOperator()) {
-            if (bufferStack.peek().isLeftBracket()
-                || bufferStack.peek().isRightBracket()) {
-                throw new UnsupportedOperationException();
-            }
-        }
+
         while (!bufferStack.empty()) {
-            outputQueue.add(bufferStack.pop());
+            Token token = bufferStack.pop();
+            if (token.isRightBracket() || token.isLeftBracket()) {
+                throw new ArithmeticException("Invalid brackets");
+            }
+
+            outputQueue.add(token);
         }
 
         return outputQueue;
@@ -150,14 +150,14 @@ class Parser {
             operand1 = arguments.pop();
 
             if (operand2 == 0.0) {
-                throw new ArithmeticException();
+                throw new ArithmeticException("Zero division");
             }
 
             resultNumber = operand1 / operand2;
             break;
 
         default:
-            throw new UnsupportedOperationException();
+            throw new UnsupportedOperationException("Operator is not supported");
         }
 
         return resultNumber;
