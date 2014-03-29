@@ -41,93 +41,34 @@ public class Calculator extends JFrame {
     ArrayList<JButton> initializeButtons() {
         ArrayList<JButton> buttons = new ArrayList<JButton>();
 
-        // Initialize numbers 1..9
+        // Add some buttons
 
-        for (int i = 1; i <= 9; ++i) {
-            final String name = Integer.toString(i);
-            JButton button = new JButton(name);
+        String[] neededButtons = {
+            "1", "2", "3",
+            "4", "5", "6",
+            "7", "8", "9",
+            "(", "0", ")",
+            "+", "-", "*",
+            "/", /* ... */
+        };
 
-            button.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent e) {
-                    addTextToResultField(name);
-                }
-            });
-
+        for (String buttonName : neededButtons) {
+            JButton button = new JButton(buttonName);
+            button.addActionListener(addToResultField(buttonName));
             buttons.add(button);
         }
 
-        // Initialize cancel, zero and backspace
-
-        JButton lBracketButton = new JButton("(");
-        lBracketButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField("(");
-            }
-        });
-        buttons.add(lBracketButton);
-
-        JButton zeroButton = new JButton("0");
-        zeroButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField("0");
-            }
-        });
-        buttons.add(zeroButton);
-
-        JButton rBracketButton = new JButton(")");
-        rBracketButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField(")");
-            }
-        });
-        buttons.add(rBracketButton);
-
-        // Initialize operators
-
-        JButton addButton = new JButton("+");
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField("+");
-            }
-        });
-        buttons.add(addButton);
-
-        JButton subButton = new JButton("-");
-        subButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField("-");
-            }
-        });
-        buttons.add(subButton);
-
-        JButton mulButton = new JButton("*");
-        mulButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField("*");
-            }
-        });
-        buttons.add(mulButton);
-
-        JButton divButton = new JButton("/");
-        divButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                addTextToResultField("/");
-            }
-        });
-        buttons.add(divButton);
-
+        // Add `=' and `C' buttons
 
         JButton resButton = new JButton("=");
         resButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Parser parser = new Parser(resultText);
                 double result = parser.calculate();
-
                 addTextToResultField("=" + result);
             }
         });
         buttons.add(resButton);
-
 
         JButton cancelButton = new JButton("C");
         cancelButton.addActionListener(new ActionListener() {
@@ -150,5 +91,14 @@ public class Calculator extends JFrame {
     protected void clearResultField() {
         resultText = "";
         resultField.setText(resultText);
+    }
+
+
+    private ActionListener addToResultField(final String text) {
+        return new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                addTextToResultField(text);
+            }
+        };
     }
 }
