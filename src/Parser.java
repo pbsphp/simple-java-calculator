@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Stack;
+import java.lang.Exception;
 
 
 class Parser {
@@ -8,7 +9,7 @@ class Parser {
     }
 
 
-    public double calculate() {
+    public double calculate() throws Exception {
         ArrayList<Token> tokensList = getTokensAsList();
         ArrayList<Token> tokensStack = backPolishNotation(tokensList);
 
@@ -63,7 +64,7 @@ class Parser {
     }
 
 
-    ArrayList<Token> backPolishNotation(ArrayList<Token> arrayList) {
+    ArrayList<Token> backPolishNotation(ArrayList<Token> arrayList) throws Exception {
         ArrayList<Token> outputQueue = new ArrayList<Token>();
         Stack<Token> bufferStack = new Stack<Token>();
 
@@ -72,10 +73,10 @@ class Parser {
                 outputQueue.add(token);
             }
             else if (token.isFunction()) {
-                // ...
+                throw new UnsupportedOperationException();
             }
             else if (token.isSeparator()) {
-                // ...
+                throw new UnsupportedOperationException();
             }
             else if (token.isOperator()) {
                 Token op1 = token;
@@ -98,16 +99,18 @@ class Parser {
                 while (!bufferStack.peek().isLeftBracket()) {
                     outputQueue.add(bufferStack.pop());
                 }
-                // if bifferStack.peek() is not ) - raise error
-                bufferStack.pop();
 
-                // Functions
+                if (!bufferStack.peek().isRightBracket()) {
+                    throw new UnsupportedOperationException();
+                }
+
+                bufferStack.pop();
             }
         }
         if (!bufferStack.empty() && bufferStack.peek().isOperator()) {
             if (bufferStack.peek().isLeftBracket()
                 || bufferStack.peek().isRightBracket()) {
-                // Error
+                throw new UnsupportedOperationException();
             }
         }
         while (!bufferStack.empty()) {
@@ -118,7 +121,7 @@ class Parser {
     }
 
 
-    public double calculateForOperator(Token operator, Stack<Double> arguments) {
+    public double calculateForOperator(Token operator, Stack<Double> arguments) throws Exception {
         double resultNumber = 0;
         double operand1 = 0;
         double operand2 = 0;
@@ -145,11 +148,16 @@ class Parser {
         case "/":
             operand2 = arguments.pop();
             operand1 = arguments.pop();
+
+            if (operand2 == 0.0) {
+                throw new ArithmeticException();
+            }
+
             resultNumber = operand1 / operand2;
             break;
 
         default:
-            System.out.println("Not operator!");
+            throw new UnsupportedOperationException();
         }
 
         return resultNumber;

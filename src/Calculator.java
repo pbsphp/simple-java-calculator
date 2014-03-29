@@ -64,8 +64,15 @@ public class Calculator extends JFrame {
         resButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Parser parser = new Parser(resultText);
-                double result = parser.calculate();
-                addTextToResultField("=" + result);
+
+                try {
+                    double result = parser.calculate();
+                    addTextToResultField("=" + result);
+                }
+                catch (Exception exception) {
+                    clearResultField();
+                    addTextToResultField("ERROR");
+                }
             }
         });
         buttons.add(resButton);
