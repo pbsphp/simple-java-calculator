@@ -12,10 +12,14 @@ public class Calculator extends JFrame {
 
         JPanel buttonsPanel = new JPanel(new GridLayout(6, 3));
 
+        JTextField resultField = new JTextField(20);
+
+
         for (JButton button : initializeButtons()) {
             buttonsPanel.add(button);
         }
 
+        add(resultField, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.SOUTH);
     }
 
