@@ -28,6 +28,8 @@ public class Calculator extends JFrame {
 
         add(resultField, BorderLayout.NORTH);
         add(buttonsPanel, BorderLayout.SOUTH);
+
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 
